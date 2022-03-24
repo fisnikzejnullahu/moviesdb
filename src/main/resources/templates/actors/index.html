@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragments/header :: head"/>
+
+<body class="home page-template page-template-page-home page-template-page-home-php page page-id-452 user-registration-page wpb-js-composer js-comp-ver-6.8.0 vc_responsive">
+
+<header th:replace="fragments/navbar :: header"/>
+
+<section class="content-section mt-5">
+    <div class="container">
+        <div class="row justify-content-between align-items-center">
+            <div class="col">
+                <h4>Browse Actors</h4>
+            </div>
+            <div class="col">
+                <div class="d-flex flex-row-reverse align-items-center">
+                    <form class="form-inline">
+                        <div class="form-group row">
+                            <label for="sortBySelect">Show by</label>
+                            <div class="col">
+                                <select class="form-control" id="sortBySelect">
+                                    <option value="movie-count-desc" selected>Movies Played Desc</option>
+                                    <option value="movie-count-asc">Movies Played Asc</option>
+                                    <option value="name-asc">Name Asc</option>
+                                    <option value="name-desc">Name Desc</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-6" th:each="i : ${#numbers.sequence(0,model.actors.size() - 1,1)}">
+                <div class="video-thumb actor-card">
+                    <figure><a th:href="@{/actors/{id} (id=${model.actors.get(i).id})}"> <img
+                            th:alt="${model.actors.get(i).name}"
+                            th:src="${model.actors.get(i).pictureUrl != null ? model.actors.get(i).pictureUrl : '/assets/images/nopicture.png'}"></a>
+                    </figure>
+                    <div class="video-content">
+                        <!-- end age -->
+                        <h3 class="name">
+                            <a th:text="${model.actors.get(i).name}" th:href="${model.actors.get(i).id}"></a>
+                            <span class="font-weight-bold text-success" th:text="${'(' + model.actors.get(i).moviesCount + ')'}"></span>
+                        </h3>
+                    </div>
+                    <!-- end video-content -->
+                </div>
+                <!-- end video-thumb -->
+            </div>
+            <!-- end col-2 -->
+        </div>
+
+        <div th:replace="fragments/pagination :: pagination(pageCount=${model.pageCount}, pageNumber=${model.pageNumber}, href='actors')">
+
+        </div>
+    <!-- end container -->
+</section>
+<!-- end content-section -->
+
+<footer th:replace="fragments/footer :: footer"></footer>
+
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragments/header :: head"/>
+
+<body class="home page-template page-template-page-home page-template-page-home-php page page-id-452 user-registration-page wpb-js-composer js-comp-ver-6.8.0 vc_responsive">
+
+<header th:replace="fragments/navbar :: header"/>
+
+<section class="content-section mt-5">
+    <div class="container">
+        <div class="row mt-2">
+            <span class="ml-4"><h4>My playlists:</h4></span>
+            <div class="col">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                    New Playlist
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Create new playlist</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form th:action="@{/playlists}" method="post">
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="playlist-name" class="col-form-label">Playlist name:</label>
+                                        <input type="text" class="form-control" id="playlist-name" name="playlistName">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit button" class="btn btn-primary">Save</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmDeleteModalLabel"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="post">
+                        <input type="hidden"
+                               th:name="${_csrf.parameterName}"
+                               th:value="${_csrf.token}"/>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button type="submit button" class="btn btn-danger">Delete</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <button id="openModalBtn" type="button" data-toggle="modal" data-target="#confirmDeleteModal" style="visibility: hidden">
+        </button>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Playlist</th>
+                <th scope="col">Last Updated</th>
+                <th scope="col">Video count</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="playlist : ${playlists}">
+                <td th:text="${playlist.name}"></td>
+                <td th:text="${playlist.lastUpdated}"></td>
+                <td th:text="${playlist.movies.size}"></td>
+                <td>
+                    <a class="text-decoration-none" th:href="@{/playlists/{id} (id=${playlist.id})}">
+                        <button class="btn btn-outline-info"><i class="fas fa-edit"></i></button>
+                    </a>
+                    <button type="button" class="btn btn-outline-danger delete-playlist-btn"
+                            th:data-playlist-id="${playlist.id}"
+                            th:data-playlist-name="${playlist.name}">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- end container -->
+</section>
+<!-- end content-section -->
+
+<footer th:replace="fragments/footer :: footer"></footer>
+
+</body>
+</html>

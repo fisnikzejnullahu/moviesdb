@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="fragments/header :: head"/>
+
+<body
+        class="home page-template page-template-page-home page-template-page-home-php page page-id-452 user-registration-page wpb-js-composer js-comp-ver-6.8.0 vc_responsive">
+
+<header th:replace="fragments/navbar :: header"/>
+
+<section class="content-section mt-5">
+    <div class="container">
+        <!-- Modal -->
+        <div aria-hidden="true" aria-labelledby="editPlaylistModalLabel" class="modal fade" id="editPlaylistModal"
+             role="dialog" tabindex="-1">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editPlaylistModalLabel">Modal delete confirmation</h5>
+                        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="post" th:action="@{/playlists/update/{id} (id=${playlist.id})}">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label class="col-form-label" for="playlist-name">Playlist name:</label>
+                                <input class="form-control" id="playlist-name" name="newPlaylistName" th:value="${playlist.name}"
+                                       type="text">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+                            <button class="btn btn-primary" type="submit button">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <a href="/playlists">
+                        <span class="mb-4">
+                            <small>← back to playlists</small>
+                        </span>
+                </a>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row mt-3">
+            <div class="col">
+                    <span>Movies in this playlist:
+                        <b th:text="${'(' + playlist.movies.size + ')'}"></b>
+                    </span>
+            </div>
+            <div class="col text-right">
+                <span>Playlist name: (<strong th:text="${playlist.name}"></strong>)</span>
+                <span>
+                    <button class="btn btn-info btn-sm" data-target="#editPlaylistModal" data-toggle="modal"
+                            type="button">
+                        Change
+                    </button>
+                </span>
+            </div>
+        </div>
+
+        <form id="remove-movie-from-playlist-form">
+            <input type="hidden"
+                   th:name="${_csrf.parameterName}"
+                   th:value="${_csrf.token}"/>
+
+            <input type="hidden" name="movieId" id="movieId">
+            <input type="hidden" name="playlistId" id="playlistId" th:value="${playlist.id}">
+        </form>
+
+        <div class="row mt-2">
+            <div class="col">
+                <ul class="list-group">
+                    <li th:each="movie : ${playlist.movies}">
+                        <div class="row list-group-item d-flex justify-content-between align-items-center">
+                            <div class="col">
+                                <div class="row">
+                                    <span class="text-danger remove-movie-from-playlist-btn" role="button"
+                                          th:data-movie-id="${movie.id}"
+                                          th:data-movie-title="${movie.title}"
+                                          data-toggle="tooltip" data-placement="top" title="Remove movie from playlist">
+                                        <i aria-hidden="true" class="fa fa-times"></i>
+                                    </span>
+                                    <a class="ml-2" th:href="@{/movies/{id} (id=${movie.id})}">
+                                        <span class="font-weight-bold" th:text="${movie.title}"></span>
+                                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="col text-right">
+                                    <span class="badge badge-pill">
+                                        <span class="fa fa-star checked rating-star"></span>
+                                        <span th:text="${movie.rate}"></span>
+                                    </span>
+                                <span class="badge badge-pill badge-warning"
+                                      th:text="${movie.releaseDate.year}"></span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- end container -->
+</section>
+<!-- end content-section -->
+
+<footer th:replace="fragments/footer :: footer"></footer>
+
+</body>
+
+</html>

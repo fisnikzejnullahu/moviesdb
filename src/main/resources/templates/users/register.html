@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="fragments/header :: head" />
+
+<body
+        class="home page-template page-template-page-home page-template-page-home-php page page-id-452 user-registration-page wpb-js-composer js-comp-ver-6.8.0 vc_responsive">
+
+<header th:replace="fragments/navbar :: header" />
+
+<section class="content-section mt-5">
+
+    <div class="container">
+        <div class="vc_row wpb_row vc_row-fluid vc_row-o-content-middle vc_row-flex">
+            <div class="wpb_column vc_column_container vc_col-sm-12 vc_col-md-7">
+                <div class="vc_column-inner">
+                    <div class="wpb_wrapper">
+                        <div class="wpb_text_column wpb_content_element ">
+                            <div class="wpb_wrapper">
+                                <p class="font-italic">Already have an account<a class="text-info" href="/login"> Sign in</a></p>
+                            </div>
+                        </div>
+
+                        <div class="wpb_text_column wpb_content_element ">
+                            <div class="wpb_wrapper">
+                                <div class="user-registration" id="user-registration">
+
+
+                                    <div class="ur-frontend-form login " id="ur-frontend-form">
+
+                                        <form class="user-registration-form user-registration-form-login login"
+                                              method="post"
+                                              th:action="@{/users/register}"
+                                              th:object="${userRegisterForm}">
+                                            <div class="ur-form-row">
+                                                <div class="ur-form-grid">
+                                                    <p class="user-registration-form-row user-registration-form-row--wide form-row form-row-wide">
+                                                        <label for="username">Username <span
+                                                                class="required">*</span></label> <span
+                                                            class="input-wrapper">
+                                                                <input
+                                                                        class="user-registration-Input user-registration-Input--text input-text"
+                                                                        id="username"
+                                                                        th:field="*{username}"
+                                                                        type="text" value="">
+                                                            </span>
+                                                    </p>
+
+                                                    <p class="user-registration-form-row user-registration-form-row--wide form-row form-row-wide">
+                                                        <label class="text-danger"
+                                                                th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></label>
+                                                    </p>
+                                                    <p class="user-registration-form-row user-registration-form-row--wide form-row form-row-wide">
+                                                        <label for="password">Password <span
+                                                                class="required">*</span></label> <span
+                                                            class="input-wrapper">
+                                                                <span class="password-input-group">
+                                                                    <input
+                                                                            class="user-registration-Input user-registration-Input--text input-text"
+                                                                            id="password"
+                                                                            th:field="*{password}"
+                                                                            type="password" value="">
+
+                                                                </span>
+                                                            </span>
+                                                    </p>
+                                                    <p class="user-registration-form-row user-registration-form-row--wide form-row form-row-wide">
+                                                        <label class="text-danger"
+                                                               th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></label>
+                                                    </p>
+
+                                                    <div>
+                                                        <button class="user-registration-Button button mt-3"
+                                                               type="submit">Register</button>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+</body>
+
+</html>

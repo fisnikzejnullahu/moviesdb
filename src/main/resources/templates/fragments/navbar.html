@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<header th:fragment="header">
+    <nav class="mobile-menu">
+        <div class="inner">
+            <div class="mobile-search">
+                <form role="search" action="http://localhost/wordpress/" method="get" id="searchform2">
+                    <select name="post_type">
+                        <option value="movie">Movie</option>
+                        <option value="tv_show">TV Show</option>
+                    </select>
+                    <input type="search" name="s" placeholder="Search here">
+                    <input type="submit" value="FIND">
+                </form>
+            </div>
+            <!-- end mobile-search -->
+            <a href="http://localhost/wordpress/my-account/" class="button-account"><i class="lni lni-user"></i> ACCOUNT
+            </a>
+            <!-- end button-account -->
+            <div class="site-menu">
+                <div class="menu-main-menu-container">
+                    <ul id="menu-main-menu" class="menu-horizontal">
+                        <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement"
+                            id="menu-item-51"
+                            class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-452 current_page_item active menu-item-51 nav-item">
+                            <a title="HOME" href="http://localhost/wordpress/" class="nav-link"
+                               aria-current="page">HOME</a><i></i>
+                        </li>
+                        <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement"
+                            id="menu-item-52"
+                            class="menu-item menu-item-type-post_type menu-item-object-page menu-item-52 nav-item"><a
+                                title="MOVIES" href="http://localhost/wordpress/movies/"
+                                class="nav-link">MOVIES</a><i></i></li>
+                        <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement"
+                            id="menu-item-53"
+                            class="menu-item menu-item-type-post_type menu-item-object-page menu-item-53 nav-item"><a
+                                title="TV SHOWS" href="http://localhost/wordpress/tv-shows/" class="nav-link">TV
+                            SHOWS</a><i></i></li>
+                        <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement"
+                            id="menu-item-443"
+                            class="menu-item menu-item-type-post_type menu-item-object-page menu-item-443 nav-item"><a
+                                title="AUDIOBOOKS" href="http://localhost/wordpress/audiobooks/"
+                                class="nav-link">AUDIOBOOKS</a><i></i></li>
+                        <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement"
+                            id="menu-item-45"
+                            class="menu-item menu-item-type-post_type menu-item-object-page menu-item-45 nav-item"><a
+                                title="BLOG" href="http://localhost/wordpress/blog/" class="nav-link">BLOG</a><i></i>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- end site-menu -->
+        </div>
+        <!-- end inner -->
+    </nav>
+    <!-- end mobile-menu -->
+
+    <nav class="navbar" style="
+    background: #000;
+">
+        <div class="logo"><a href="/"><img src="/assets/images/logo@2x.png" alt="logo"></a></div>
+        <div class="site-menu">
+            <div class="menu-main-menu-container">
+                <ul id="menu-main-menu-1" class="menu-horizontal">
+                    <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement"
+                        class="menu-item menu-item-type-post_type menu-item-object-page menu-item-52 nav-item"><a
+                            title="MOVIES" href="/movies/" class="nav-link">MOVIES</a><i></i>
+                    </li>
+                    <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement"
+                        class="menu-item menu-item-type-post_type menu-item-object-page menu-item-53 nav-item"><a
+                            title="ACTORS" href="/actors/" class="nav-link">ACTORS</a><i></i>
+                    </li>
+                    <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement"
+                        class="menu-item menu-item-type-post_type menu-item-object-page menu-item-45 nav-item">
+                        <a sec:authorize="isAuthenticated()"
+                           title="PLAYLISTS" href="/playlists/"
+                           class="nav-link">MY PLAYLISTS</a><i></i>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- end site-menu -->
+
+        <div class="user-menu">
+<!--            <div class="navbar-search"><i class="lni lni-search-alt"></i></div>-->
+            <!-- end navbar-search -->
+            <div sec:authorize="isAnonymous()">
+                <a class="navbar-search" href="/login">LOGIN </a>
+            </div>
+            <div class="navbar-search" sec:authorize="isAuthenticated()">
+                <form th:action="@{/logout}" method="post">
+                    <input type="submit" th:value="'Sign Out (' + ${#authentication.name} + ')'"/>
+                </form>
+            </div>
+            <!-- end navbar-account -->
+        </div>
+        <!-- end user-menu -->
+
+        <div class="hamburger-menu">
+            <button class="hamburger">
+                <svg width="45" height="45" viewBox="0 0 100 100">
+                    <path class="line line1"
+                          d="M 20,29.000046 H 80.000231 C 80.000231,29.000046 94.498839,28.817352 94.532987,66.711331 94.543142,77.980673 90.966081,81.670246 85.259173,81.668997 79.552261,81.667751 75.000211,74.999942 75.000211,74.999942 L 25.000021,25.000058">
+                    </path>
+                    <path class="line line2" d="M 20,50 H 80"></path>
+                    <path class="line line3"
+                          d="M 20,70.999954 H 80.000231 C 80.000231,70.999954 94.498839,71.182648 94.532987,33.288669 94.543142,22.019327 90.966081,18.329754 85.259173,18.331003 79.552261,18.332249 75.000211,25.000058 75.000211,25.000058 L 25.000021,74.999942">
+                    </path>
+                </svg>
+            </button>
+        </div>
+        <!-- end hamburger-menu -->
+    </nav>
+</header>
+

@@ -1,0 +1,111 @@
+<div class="row justify-content-center" th:fragment="pagination(pageCount, pageNumber, href)">
+    <div class="col-md-auto">
+        <p th:if="${pageCount == 1 || pageNumber == pageCount}">End of results</p>
+
+        <div class="pagination mt-1" th:unless="${pageCount == 1}">
+            <!-- start link -->
+            <a class="next page-numbers"
+               th:href="@{/{href}?page={page}&genres={genres}&sort_by={sortBy}&sort_order={sortOrder}
+               (href=${href},
+               page=${pageNumber - 1},
+               genres=${param.genres != null ? param.genres : ''},
+sortBy=${param.sort_by != null ? param.sort_by : ''},
+               sortOrder=${param.sort_order != null ? param.sort_order : ''})}"
+               th:if="${pageNumber > 1 && pageCount > 0}">Prev «</a>
+            <!-- end link -->
+
+            <!--                     start link-->
+            <a class="page-numbers"
+               th:href="@{/{href}?page={page}&genres={genres}&sort_by={sortBy}&sort_order={sortOrder}
+               (href=${href},
+               page=${pageNumber - 1},
+               genres=${param.genres != null ? param.genres : ''},
+sortBy=${param.sort_by != null ? param.sort_by : ''},
+               sortOrder=${param.sort_order != null ? param.sort_order : ''})}"
+               th:if="${pageNumber != 1
+                                && pageNumber > 1
+                                && pageNumber < (pageCount - 2)}"
+               th:text="${pageNumber - 1}"></a>
+            <!--                     end link -->
+
+            <!-- start div -->
+            <div th:if="${pageCount < 5}">
+
+                <a th:class="'page-numbers' + ${(pageNumber == i) ? ' current' : ''}"
+                   th:each="i : ${#numbers.sequence(1,pageCount,1)}"
+                   th:href="@{/{href}?page={page}&genres={genres}&sort_by={sortBy}&sort_order={sortOrder}
+                   (href=${href},
+                   page=${i},
+                   genres=${param.genres != null ? param.genres : ''},
+sortBy=${param.sort_by != null ? param.sort_by : ''},
+                   sortOrder=${param.sort_order != null ? param.sort_order : ''})}"
+                   th:text="${i}">
+                </a>
+            </div>
+            <!-- end div -->
+
+            <!-- start div -->
+            <div th:unless="${pageCount < 5}">
+                <!-- start div -->
+                <div th:if="${pageNumber < (pageCount - 2)}">
+                    <!--                       th:href="@{/{href}?page={page} (href=${href},page=${pageNumber + (i-1)})}"-->
+                    <a th:class="'page-numbers' + ${(pageNumber == pageNumber + i-1) ? ' current' : ''}"
+                       th:each="i : ${#numbers.sequence(1,2,1)}"
+                       th:href="@{/{href}?page={page}&genres={genres}&sort_by={sortBy}&sort_order={sortOrder}
+                           (href=${href},
+                           page=${pageNumber + (i-1)},
+                           genres=${param.genres != null ? param.genres : ''},
+sortBy=${param.sort_by != null ? param.sort_by : ''},
+                           sortOrder=${param.sort_order != null ? param.sort_order : ''})}"
+                       th:text="${pageNumber + (i-1)}">
+                    </a>
+                    <a class="page-numbers">...</a>
+                    <!--                       th:href="@{/{href}?page={page} (href=${href},page=${pageCount})}"-->
+                    <a class="page-numbers"
+                       th:href="@{/{href}?page={page}&genres={genres}&sort_by={sortBy}&sort_order={sortOrder}
+                           (href=${href},
+                           page=${pageCount},
+                           genres=${param.genres != null ? param.genres : ''},
+sortBy=${param.sort_by != null ? param.sort_by : ''},
+                           sortOrder=${param.sort_order != null ? param.sort_order : ''})}"
+                       th:text="${pageCount}"></a>
+                </div>
+                <!-- end div -->
+
+
+                <!-- start div -->
+                <div th:unless="${pageNumber < (pageCount - 2)}">
+                    <a class="page-numbers" th:href="'/' + ${href} + '?page=1'">1</a>
+                    <a class="page-numbers">...</a>
+
+                    <!--                       th:href="@{/{href}?page={page} (href=${href},page=${i})}"-->
+                    <a th:class="'page-numbers' + ${(pageNumber == i) ? ' current' : ''}"
+                       th:each="i : ${#numbers.sequence(pageCount - 2, pageCount, 1)}"
+                       th:href="@{/{href}?page={page}&genres={genres}&sort_by={sortBy}&sort_order={sortOrder}
+                           (href=${href},
+                           page=${i},
+                           genres=${param.genres != null ? param.genres : ''},
+sortBy=${param.sort_by != null ? param.sort_by : ''},
+                           sortOrder=${param.sort_order != null ? param.sort_order : ''})}"
+                       th:text="${i}">
+                    </a>
+                </div>
+                <!-- end div -->
+
+            </div>
+            <!-- end div -->
+
+            <!--               th:href="@{/{href}?page={page} (href=${href},page=${pageNumber + 1})}"-->
+            <a class="next page-numbers"
+               th:href="@{/{href}?page={page}&genres={genres}&sort_by={sortBy}&sort_order={sortOrder}
+                           (href=${href},
+                           page=${pageNumber + 1},
+                           genres=${param.genres != null ? param.genres : ''},
+sortBy=${param.sort_by != null ? param.sort_by : ''},
+                           sortOrder=${param.sort_order != null ? param.sort_order : ''})}"
+               th:if="${pageNumber < pageCount && pageCount > 0}">Next »</a>
+            <!-- end pagination -->
+        </div>
+    </div>
+    <!-- end row -->
+</div>

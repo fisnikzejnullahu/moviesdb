@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragments/header :: head"></head>
+
+<body class="home page-template page-template-page-home page-template-page-home-php page page-id-452 user-registration-page wpb-js-composer js-comp-ver-6.8.0 vc_responsive">
+
+<header th:replace="fragments/navbar :: header"></header>
+
+<section class="content-section mt-5">
+    <div class="container">
+        <div class="section-title mb-0" style="color:#111111;">
+            <h6> BROWSE MOVIES <span class="font-italic" th:if="${param.genres != null && !param.genres[0].isEmpty()}" th:text="' in genres: ' + ${param.genres}"></span></h6>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 col-sm-6" th:each="movie : ${model.movies}">
+                <div class="category-thumb">
+                    <figure class="category-image">
+                        <img th:alt="${movie.title}" th:src="${movie.thumbnailUrl}"></a>
+                    </figure>
+                    <div class="category-content">
+                        <ul class="tags">
+                            <li th:each="genre : ${movie.genres}" th:text="${genre.name}"/>
+                        </ul>
+                        <h3 class="name" th:text="${movie.title}"/>
+                        <div class="play-btn"><a th:href="@{/movies/{id} (id=${movie.id})}"> +</a>
+                        </div>
+                        <small class="details">
+                            <span class="fa fa-star checked rating-star"></span>
+                            <span th:text="${movie.rate + ' - ' + movie.releaseDate.getYear()}"/>
+                        </small>
+                    </div>
+                    <!-- end category-content -->
+                </div>
+                <!-- end category-thumb -->
+            </div>
+            <!-- end col-3 -->
+        </div>
+
+        <div th:replace="fragments/pagination :: pagination(pageCount=${model.pageCount}, pageNumber=${model.pageNumber}, href='movies')">
+
+        </div>
+    </div>
+</section>
+
+<footer th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>

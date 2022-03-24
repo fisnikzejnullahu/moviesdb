@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="fragments/header :: head">
+
+    <style>
+        body{margin-top:20px;
+            background:#eee;
+        }
+        .single_advisor_profile {
+            position: relative;
+            margin-bottom: 50px;
+            -webkit-transition-duration: 500ms;
+            transition-duration: 500ms;
+            z-index: 1;
+            border-radius: 15px;
+            -webkit-box-shadow: 0 0.25rem 1rem 0 rgba(47, 91, 234, 0.125);
+            box-shadow: 0 0.25rem 1rem 0 rgba(47, 91, 234, 0.125);
+        }
+        .single_advisor_profile .advisor_thumb {
+            position: relative;
+            z-index: 1;
+            border-radius: 15px 15px 0 0;
+            margin: 0 auto;
+            padding: 30px 30px 0 30px;
+            background-color: #3f43fd;
+            overflow: hidden;
+        }
+        .single_advisor_profile .advisor_thumb::after {
+            -webkit-transition-duration: 500ms;
+            transition-duration: 500ms;
+            position: absolute;
+            width: 150%;
+            height: 80px;
+            bottom: -45px;
+            left: -25%;
+            content: "";
+            background-color: #ffffff;
+            -webkit-transform: rotate(-15deg);
+            transform: rotate(-15deg);
+        }
+        @media only screen and (max-width: 575px) {
+            .single_advisor_profile .advisor_thumb::after {
+                height: 160px;
+                bottom: -90px;
+            }
+        }
+        .single_advisor_profile .advisor_thumb .social-info {
+            position: absolute;
+            z-index: 1;
+            width: 100%;
+            bottom: 0;
+            right: 30px;
+            text-align: right;
+        }
+        .single_advisor_profile .advisor_thumb .social-info a {
+            font-size: 14px;
+            color: #020710;
+            padding: 0 5px;
+        }
+        .single_advisor_profile .advisor_thumb .social-info a:hover,
+        .single_advisor_profile .advisor_thumb .social-info a:focus {
+            color: #3f43fd;
+        }
+        .single_advisor_profile .advisor_thumb .social-info a:last-child {
+            padding-right: 0;
+        }
+        .single_advisor_profile .single_advisor_details_info {
+            position: relative;
+            z-index: 1;
+            padding: 30px;
+            text-align: right;
+            -webkit-transition-duration: 500ms;
+            transition-duration: 500ms;
+            border-radius: 0 0 15px 15px;
+            background-color: #ffffff;
+        }
+        .single_advisor_profile .single_advisor_details_info::after {
+            -webkit-transition-duration: 500ms;
+            transition-duration: 500ms;
+            position: absolute;
+            z-index: 1;
+            width: 50px;
+            height: 3px;
+            background-color: #3f43fd;
+            content: "";
+            top: 12px;
+            right: 30px;
+        }
+        .single_advisor_profile .single_advisor_details_info h6 {
+            margin-bottom: 0.25rem;
+            -webkit-transition-duration: 500ms;
+            transition-duration: 500ms;
+        }
+        @media only screen and (min-width: 768px) and (max-width: 991px) {
+            .single_advisor_profile .single_advisor_details_info h6 {
+                font-size: 14px;
+            }
+        }
+        .single_advisor_profile .single_advisor_details_info p {
+            -webkit-transition-duration: 500ms;
+            transition-duration: 500ms;
+            margin-bottom: 0;
+            font-size: 14px;
+        }
+        @media only screen and (min-width: 768px) and (max-width: 991px) {
+            .single_advisor_profile .single_advisor_details_info p {
+                font-size: 12px;
+            }
+        }
+        .single_advisor_profile:hover .advisor_thumb::after,
+        .single_advisor_profile:focus .advisor_thumb::after {
+            background-color: #070a57;
+        }
+        .single_advisor_profile:hover .advisor_thumb .social-info a,
+        .single_advisor_profile:focus .advisor_thumb .social-info a {
+            color: #ffffff;
+        }
+        .single_advisor_profile:hover .advisor_thumb .social-info a:hover,
+        .single_advisor_profile:hover .advisor_thumb .social-info a:focus,
+        .single_advisor_profile:focus .advisor_thumb .social-info a:hover,
+        .single_advisor_profile:focus .advisor_thumb .social-info a:focus {
+            color: #ffffff;
+        }
+        .single_advisor_profile:hover .single_advisor_details_info,
+        .single_advisor_profile:focus .single_advisor_details_info {
+            background-color: #070a57;
+        }
+        .single_advisor_profile:hover .single_advisor_details_info::after,
+        .single_advisor_profile:focus .single_advisor_details_info::after {
+            background-color: #ffffff;
+        }
+        .single_advisor_profile:hover .single_advisor_details_info h6,
+        .single_advisor_profile:focus .single_advisor_details_info h6 {
+            color: #ffffff;
+        }
+        .single_advisor_profile:hover .single_advisor_details_info p,
+        .single_advisor_profile:focus .single_advisor_details_info p {
+            color: #ffffff;
+        }
+    </style>
+</head>
+
+<body class="tv_show-template-default single single-tv_show postid-172 user-registration-page wpb-js-composer js-comp-ver-6.8.0 vc_responsive">
+
+<header th:replace="fragments/navbar :: header"></header>
+<div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="exampleModal" role="dialog"
+     tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" sec:authorize="isAuthenticated()">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Select playlists:</h5>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="add-to-playlist-form">
+                <input th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}"
+                       type="hidden"/>
+
+                <input name="movieId"
+                       th:value="${model.movie.id}"
+                       type="hidden"/>
+
+                <input id="playlistsId"
+                       name="playlistsId"
+                       type="hidden"/>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <p th:if="${model.userPlaylists == null || model.userPlaylists.size == 0}">
+                            You don't have any playlists! <span><a class="font-italic text-info" href="/playlists">Create now</a></span>
+                        </p>
+                        <div th:unless="${model.userPlaylists == null || model.userPlaylists.size == 0}" class="form-check"
+                             th:each="playlist : ${model.userPlaylists}">
+                            <input class="form-check-input checked" th:checked="${model.playlistContainsMovieId(playlist, model.movie)}" th:id="${playlist.id}" type="checkbox"
+                                   value="">
+                            <label class="form-check-label" th:for="${playlist.id}" th:text="${playlist.name}"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+                    <button th:unless="${model.userPlaylists == null || model.userPlaylists.size == 0}" class="btn btn-primary" type="submit button">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div sec:authorize="isAuthenticated()" class="modal fade" id="ratingModal" tabindex="-1" role="dialog" aria-labelledby="ratingModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="width: inherit !important;">
+            <div class="modal-body p-4">
+                <fieldset class="rating">
+                    <legend>Give your rate</legend>
+                    <input th:checked="${model.userRate == 10}" type="radio" id="star10" value="10" /><label for="star10"></label>
+                    <input th:checked="${model.userRate == 9}" type="radio" id="star9" value="9" /><label for="star9"></label>
+                    <input th:checked="${model.userRate == 8}" type="radio" id="star8" value="8" /><label for="star8"></label>
+                    <input th:checked="${model.userRate == 7}" type="radio" id="star7" value="7" /><label for="star7"></label>
+                    <input th:checked="${model.userRate == 6}" type="radio" id="star6" value="6" /><label for="star6"></label>
+                    <input th:checked="${model.userRate == 5}" type="radio" id="star5" value="5" /><label for="star5"></label>
+                    <input th:checked="${model.userRate == 4}" type="radio" id="star4" value="4" /><label for="star4"></label>
+                    <input th:checked="${model.userRate == 3}" type="radio" id="star3" value="3" /><label for="star3"></label>
+                    <input th:checked="${model.userRate == 2}" type="radio" id="star2" value="2" /><label for="star2"></label>
+                    <input th:checked="${model.userRate == 1}" type="radio" id="star1" value="1" /><label for="star1"></label>
+                </fieldset>
+
+            </div>
+
+            <div class="modal-footer d-flex justify-content-center" >
+                <form id="rate-form" th:action="'/movies/' + ${model.movie.id} + '/rate'" method="post">
+
+                    <input type="text" id="rate-text" name="rate" hidden>
+                    <button type="button submit" class="btn btn-sm btn-outline-primary">RATE</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<header class="page-header single">
+    <div class="poster-bg" th:data-background="${model.movie.thumbnailUrl}"
+         th:style="${'background: url(' + model.movie.thumbnailUrl + ')'}">
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="video-player">
+                    <iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen=""
+                            frameborder="0" height="506"
+                            th:src="${'https://www.youtube.com/embed/' + model.movie.trailerYoutubeVideoId}"
+                            width="900"></iframe> <!-- end video-player -->
+                </div>
+                <!-- end col-12 -->
+            </div>
+            <!-- end col-12 -->
+            <!-- end row -->
+        </div>
+        <!-- end container -->
+    </div>
+</header>
+<main style="margin-top: 743.2px;">
+    <section class="content-section">
+        <div class="container">
+            <button id="openRatingModalBtn" style="visibility: hidden" type="button" class="btn btn-primary" data-toggle="modal" data-target="#ratingModal">
+            </button>
+
+            <div class="row">
+                <div class="col-lg-9">
+                    <div class="movie-info-box">
+                        <h2 class="name" th:text="${model.movie.title}"/>
+                        <div class="features">
+                            <div style="display: inline-block;" class="mr-4">
+                                <div class="row">
+                                    <div class="col">
+                                        <span class="text-muted"><small>Rating</small></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <span class="fa fa-star checked rating-star text-success" style="font-size: 20px"></span>
+                                        <span><b style="font-size: 22px" th:text="${model.movie.rate}"></b><span><small>/10</small></span></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div sec:authorize="isAuthenticated()" style="display: inline-block;" class="mr-4">
+                                <div class="row">
+                                    <div class="col">
+                                        <span class="text-muted"><small>Your Rating</small></span>
+                                    </div>
+                                </div>
+                                <div class="row" id="rate-div">
+                                    <div class="col">
+                                        <span class="fa fa-star checked rating-star text-info"></span>
+                                        <span><b style="font-size: 22px"
+                                                 id="user-rating-text"
+                                                 th:text="${model.userRate}"></b><span><small>/10</small></span></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end rate -->
+                            <div class="year" th:text="${model.movie.releaseDate.year}"/>
+                            <!-- end year -->
+                            <div class="range" th:text="${model.movie.duration}"/>
+                            <!-- end range -->
+                            <div class="add-btn" style="margin-right: 3px;"
+                                 th:each="genre : ${model.movie.genres}">
+                                <a th:href="@{/movies?genres={genre} (genre=${genre.name})}">
+                                    <button class="simplefavorite-button category movie-genre"
+                                            th:text="${genre.name}">
+                                    </button>
+                                </a>
+                            </div>
+
+                        </div>
+                        <!-- end features -->
+                        <p class="description" th:text="${model.movie.description}"></p>
+                        <ul class="info">
+                            <h6 class="font-weight-bold">
+                                Director:
+                                <span class="font-weight-normal" th:text="${model.movie.director}"></span>
+                            </h6>
+                        </ul>
+
+                        <button sec:authorize="isAuthenticated()" class="save-movie-button" data-target="#exampleModal" data-toggle="modal" type="button">
+                            Save to <i class="fa fa-plus-square"></i>
+                        </button>
+                        <!-- end info -->
+                    </div>
+                    <!-- end movie-info-box -->
+                </div>
+                <!-- end col-9 -->
+                <div class="col-lg-3">
+                    <div class="movie-side-box">
+                        <figure><img th:alt="${model.movie.thumbnailUrl + ' thumbnail'}"
+                                     th:src="${model.movie.thumbnailUrl}">
+                        </figure>
+                    </div>
+                    <!-- end movie-side-box -->
+                </div>
+                <!-- end col-3 -->
+                <div class="col-12">
+                    <div class="info-bottom">
+                        <!-- end add-btn -->
+                    </div>
+                    <!-- end info-bottom -->
+                </div>
+                <!-- end col-12 -->
+            </div>
+
+            <h3>Top Cast:</h3>
+
+            <div class="container">
+                <div class="row">
+                    <a th:each="movieActor : ${model.movie.actors}" th:href="@{/actors/{id} (id=${movieActor.actor.id})}">
+                        <div class="card actor-card mb-4 mr-4" style="width: 15rem;">
+                            <img class="card-img-top" style=" width: 100%; height: 20vw; object-fit: cover;"
+                                 th:alt="${movieActor.actor.name}"
+                                 th:src="${(movieActor.actor.pictureUrl != null) ? movieActor.actor.pictureUrl : '/assets/images/nopicture.png'}">
+                            <div class="card-body">
+                                <small class="card-text" th:text="${movieActor.actor.name}"></small>
+                                <p class="card-text text-muted font-italic"><small th:text="'as ' + ${movieActor.characterName}"></small></p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- end row -->
+        </div>
+        <!-- end container -->
+    </section>
+    <!-- end content-section -->
+</main>
+
+<footer th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>
